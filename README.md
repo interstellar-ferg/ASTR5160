@@ -1,4 +1,4 @@
 # ASTR5160
-astro5160_course_codes_and_things
+ASTR5160 Codes and Things
 
-Check me out. I've got a GitHub (finally).
+Code for ASTR-5160 at the University of Wyoming
