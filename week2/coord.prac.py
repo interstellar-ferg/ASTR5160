@@ -38,7 +38,7 @@ def func1():
 	print(f'These are the five days before and after today converted from mjd format to iso Y-D-M H-M-S format: \n{mjd_converted.iso}')
 
 
-def func2()
+def func2():
 	"""
 	Will eventually calculate airmass of object; playing around with airmass calcs in separate file	
 
