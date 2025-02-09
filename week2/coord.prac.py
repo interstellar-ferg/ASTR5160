@@ -1,7 +1,6 @@
 from astropy import units as u
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import SkyCoord, EarthLocation, AltAz
 from astropy.time import Time
-from astropy.coordinates import EarthLocation
 import numpy as np
 
 def func1():
@@ -39,13 +38,45 @@ def func1():
 
 
 def func2():
-	"""
-	Will eventually calculate airmass of object; playing around with airmass calcs in separate file	
+	""" Calculates the altitude and airmass of a given target ar a given date and time.
 
+	Parameters:
+	----------
+	none
+
+	Returns:
+	----------	
+	none
+
+	Notes:
+	----------
+	Eventually make this broader function so user can input star coords and time they want to check airmass and altitude. Right now uses date set in code, needs
+	to use user-inputted data (like "today" or "2025-2-8 23:00:00", etc.)
 	"""
-	wiro = EarthLocation(lat = 41*u.degree + 5*u.arcmin + 49*u.arcsec, lon = 105*u.degree + 58*u.arcmin + 33*u.arcsec, height = 2943*u.meter)
 	
+	# AJF create wiro location on earth and target coordinates on sky
+	# AJF either wiro = line below will work, yield slightly diferent answers based on slightly diff. coords
+	# wiro = EarthLocation(lat = 41*u.degree + 5*u.arcmin + 49*u.arcsec, lon = -1*105*u.degree + 58*u.arcmin + 33*u.arcsec, height = 2943*u.m)
+	wiro = EarthLocation.of_address('Wyoming Infrared Observatory')
+	target = SkyCoord(ra = '12h00m00s', dec = 30*u.degree)
 
+	# AJF create times to check altitude/airmass
+	utc_diff = -7 * u.hour 
+	tn_11pm = Time("2025-2-5 23:00:00")-utc_diff
+	nm_11pm = Time("2025-3-5 23:00:00")-utc_diff
+
+	# AJF perform altitude and airmass calculations using altaz from astropy
+	target_alt_tn = target.transform_to(AltAz(obstime = tn_11pm, location = wiro))
+	target_alt_nm = target.transform_to(AltAz(obstime = nm_11pm, location = wiro))
+
+	# AJF print out altitude and airmass!
+	print(f'\nThis is the altitude and airmass of the star tonight at 11 pm: {target_alt_tn.alt:.6} and {target_alt_tn.secz}')
+	print(f'This is the altitude and airmass of the star in one month at 11 pm: {target_alt_nm.alt:.6} and {target_alt_nm.secz}\n')
+
+
+bear_mountain = EarthLocation(lat=41.3 * u.deg, lon=-74 * u.deg, height=390 * u.m)
+utcoffset = -4 * u.hour  # Eastern Daylight Time
+time = Time("2012-7-12 23:00:00") - utcoffset
 
 def main(): # AJF executes this section first (highest 'shell' of code) and references other built functions as needed
 
