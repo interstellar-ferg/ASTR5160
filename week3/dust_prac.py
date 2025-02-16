@@ -246,7 +246,7 @@ def main(): # AJF executes this section first (highest 'shell' of code)
     parser = argparse.ArgumentParser(description='Reads in datafile and pl')
     
     # AJF add user-defined ra and dec for two objects
-    parser.add_argument('-radec', metavar = '--radec', type = float, nargs = '+', help = 'ra, dec of objects; input like ra1 dec1 ra2 dec2')
+    parser.add_argument('radec', metavar = 'radec', type = float, nargs = '+', help = 'ra, dec of objects; input like ra1 dec1 ra2 dec2')
     arg = parser.parse_args()
     radec = arg.radec
     
