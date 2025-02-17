@@ -243,7 +243,7 @@ def dust_map(radec):
 
 
 def main(): # AJF executes this section first (highest 'shell' of code)
-    parser = argparse.ArgumentParser(description='Reads in datafile and pl')
+    parser = argparse.ArgumentParser(description='Find extinction values and reddening for certain directions and quasars')
     
     # AJF add user-defined ra and dec for two objects
     parser.add_argument('radec', metavar = 'radec', type = float, nargs = '+', help = 'ra, dec of objects; input like ra1 dec1 ra2 dec2')
