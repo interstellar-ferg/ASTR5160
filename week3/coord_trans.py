@@ -149,6 +149,9 @@ def movement():
 
     # AJF convert this coordinate to galactic coordinates
     zenith_gal2 = zenith2.galactic
+    
+    print(f'\nThis is quick check on values of altitude for doing it this way (mean should be 90 with no std_dev): {np.mean(zenith2.alt.value):.8} +/- {np.std(zenith2.alt.value):.4} degrees\n')
+    
     return zenith_gal, zenith_gal2, dday.value
 
 
