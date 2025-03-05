@@ -139,7 +139,7 @@ def find_quas(mon, year):
 def main(): # AJF executes this section first (highest 'shell' of code)
     parser = argparse.ArgumentParser(description='Finds which quasar, out of a specific list, is at the lowest airmess (closest to zenith) at 11 pm on every day of a given month')
     
-    # AJF add user-defined ra and dec for two objects
+    # AJF add user-defined month and year
     parser.add_argument('mon', metavar = 'mon', type = str, help = 'number of month; 01 for January, 02 for Feb., etc.')
     parser.add_argument('year', metavar = 'year', type = str, help = 'year: 2024, 2017, etc')
     arg = parser.parse_args()
