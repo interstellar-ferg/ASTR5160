@@ -91,20 +91,20 @@ def bound_caps():
     # AJF create cap list with proper formatting; ra-caps
     # polygon a ra-caps
     cap1a = list([ c1a.x.value, c1a.y.value, (c1a.z.value), 1  ])
-    cap2a = list([ c2a.x.value, c2a.y.value, (c2a.z.value), 1  ])
+    cap2a = list([ c2a.x.value, c2a.y.value, (c2a.z.value), -1  ])
     
     # AJF polygon b ra-caps
     cap1b = list([ c1b.x.value, c1b.y.value, (c1b.z.value), 1  ])
-    cap2b = list([ c2b.x.value, c2b.y.value, (c2b.z.value), 1  ])
+    cap2b = list([ c2b.x.value, c2b.y.value, (c2b.z.value), -1  ])
     
     # AJF for dec-caps
     # AJF polygon a dec-caps
-    cap3a = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), 1-np.sin(radians(30)) ])
-    cap4a = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), 1-np.sin(radians(40)) ])
+    cap3a = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), (1-np.sin(radians(30))) ])
+    cap4a = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), -1*(1-np.sin(radians(40))) ])
     
     # AJF polygon b dec-caps
     cap3b = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), 1-np.sin(radians(60)) ])
-    cap4b = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), 1-np.sin(radians(70)) ])
+    cap4b = list([ int(c3.x.value), int(c3.y.value), int(c3.z.value), -1*(1-np.sin(radians(70))) ])
     
     # calculate areas
     poly_a_area = ( ra2ar - ra1ar ) * ( np.sin(radians(40)) - np.sin(radians(30)) )
@@ -380,9 +380,9 @@ def masks(pa, pb):
 
     # AJF plot each subplot with relevant data
     ax.plot(ra, dec, 'r.', label = 'All', markersize = 2, alpha = 0.5)
-    ax.plot(ra[gooda], dec[gooda], 'g.', label = 'Poly A', markersize = 2)
-    ax.plot(ra[goodb], dec[goodb], 'c.', label = 'Poly B', markersize = 2)
-    #ax.plot(ra[good], dec[good], 'b.', label = 'Mask', markersize = 2, alpha = .5)
+    #ax.plot(ra[gooda], dec[gooda], 'g.', label = 'Poly A', markersize = 2)
+    #ax.plot(ra[goodb], dec[goodb], 'c.', label = 'Poly B', markersize = 2)
+    ax.plot(ra[good], dec[good], 'b.', label = 'Mask', markersize = 2, alpha = .5)
     #ax.plot(ra_mall, dec_mall, 'g.', label = 'Mask Gen_Rand', markersize = 1, alpha = 0.5)
     
     # AJF set x and y ticks on bottom right plot for full degree range
