@@ -77,10 +77,10 @@ def bound_caps():
     # ra and decs in degrees
     ra1ar = ra1a.to(u.rad).value
     ra2ar = ra2a.to(u.rad).value
-    
+
     ra1br = ra1b.to(u.rad).value
     ra2br = ra2b.to(u.rad).value  
-    
+    print(ra1ar, ra2ar, ra1br, ra2br)    
     # AJF change to cartesian x y z
     c1a.representation_type = coord.CartesianRepresentation
     c2a.representation_type = coord.CartesianRepresentation
@@ -109,6 +109,7 @@ def bound_caps():
     # calculate areas
     poly_a_area = ( ra2ar - ra1ar ) * ( np.sin(radians(40)) - np.sin(radians(30)) )
     poly_b_area = ( ra2br - ra1br ) * ( np.sin(radians(70)) - np.sin(radians(60)) )
+    print(poly_a_area, poly_b_area)
     
     return cap1a, cap2a, cap3a, cap4a, cap1b, cap2b, cap3b, cap4b, poly_a_area, poly_b_area
 
