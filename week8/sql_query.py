@@ -83,7 +83,7 @@ def plot(ra, dec, g):
         
         # AJF legend
         ax.legend()
-        
+    plt.savefig('sql_image.png', format = 'png')
     plt.show()
     
 def main():# AJF executes this section first (highest 'shell' of code)
