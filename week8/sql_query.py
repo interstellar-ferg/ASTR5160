@@ -6,11 +6,13 @@ import argparse
 from master_scripts.subplot_master import sub_plots as sub_plots
 
 # created by AJF 3/17/25
-# last edited by AJF 3/17/25
+# last edited by AJF 3/27/25
+
 
 
 def read():
     """ Reads in all csv files as recarrays and extracts ra and dec form each
+    - in current form (ASTR-5160), reads in sdss_test.csv
     
     Parameters:
     -----------
@@ -43,6 +45,8 @@ def read():
     g_list = [f['g'] for f in tab_list]
         
     return ra_list, dec_list, g_list
+
+
 
 
 def plot(ra, dec, g):
@@ -86,11 +90,20 @@ def plot(ra, dec, g):
     plt.savefig('sql_image.png', format = 'png')
     plt.show()
     
+    
+
+ 
+    
 def main():# AJF executes this section first (highest 'shell' of code)
     # AJF add description
-    parser = argparse.ArgumentParser(description='Use downloaded SDSS SQL Query results to plot ra/dec pairs and g-band magnitudes of these objects; create a "realistic" image of objects')
+    parser = argparse.ArgumentParser(description='Description: Use downloaded SDSS SQL Query results to plot ra/dec pairs and g-band magnitudes of these objects; create a "realistic" image of objects')
+    parser.parse_args()
     ra, dec, g = read()
     plot(ra, dec, g)
+    
+    # AJF add post-running comment and print it
+    print(f'\nUnsure if circle actually looks like SDSS image... very hard to tell. Tried to scale better, but that didnt help.\n')
+
 
 
 
