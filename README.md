@@ -1,7 +1,7 @@
 # ASTR5160
 Code for ASTR-5160 at the University of Wyoming for Spring 2025, Year 1 PhD
 
-Thus following is a brief overview/summary of topics covered each week:
+The following is a brief overview/summary of topics covered each week:
 
 Week1:
 - 1. Python introduction
