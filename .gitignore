@@ -5,3 +5,5 @@
 *.pdf
 *.csv
 *.fits
+__pycache__/
+*.pyc
