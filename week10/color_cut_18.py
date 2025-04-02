@@ -557,7 +557,7 @@ def log_and_print(tab_q, tab_s, path, path2, radius, ans, col_nams, perc_num):
     print(f'The percentage that contained NaN values, and thus could not be used in the color cut, was {frac_qccd:.3f}%.')
     print(f'\n\nThe percentage of stars correctly identified as such by using the color cut was {frac_s:.3f}%,\nwhile the percentage of stars that were misidentified as quasars was {frac_scq:.3f}%.')
     print(f'The percentage that contained NaN values, and thus could not be used in the color cut, was {frac_sccd:.3f}%.\n\n')
-    log = open('log_color_cut_18', 'a')
+    log = open('log_color_cut_18.txt', 'a')
     log.write('='*150)
     log.write(f'\n{datetime.today().strftime("%Y-%m-%d %H:%M:%S")} MDT')
     log.write(f'\nCommand-line used:\n$ python color_cut_18.py {path} {path2} {radius} {ans}')
