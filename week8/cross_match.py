@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 # from master_scripts.io import decode_sweep_name as dsn
 
 # created by AJF 3/18/25
-# last edited by AJF 4/1/25
+# last edited by AJF 4/8/25
 
 # comments: could clean this up at some point but have alreayd put way too much time into making this code work (like 40 hours :(  )
 
@@ -248,6 +248,7 @@ def leg_query(uf, path, ra_f, dec_f, n, radius, col_nams):
     
     print(f'Reading in Legacy fits tables from sweep files...\n')
     
+    # AJF run through all legacy files and load in all relevant columns from these tables all at omce
     for f in tqdm(uf):
         
         # AJF read in legacy sweep file
@@ -276,7 +277,7 @@ def leg_query(uf, path, ra_f, dec_f, n, radius, col_nams):
     # AJF read in ra and dec
     ra_leg, dec_leg = tab_leg['RA'], tab_leg['DEC']
 
-    # AJF match coordinates in arg.radius circumference
+    # AJF match coordinates in arg.radius circumference ONLY ONCE to ALL loaded-in legacy tables
     c_leg = SkyCoord(ra=ra_leg, dec=dec_leg, frame='icrs')
     id_leg, idf, extra1, extra2= c_input.search_around_sky(c_leg, radius*u.arcsec)
 
