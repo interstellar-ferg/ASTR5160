@@ -26,6 +26,34 @@ import matplotlib.pyplot as plt
 # comments: could clean this up at some point but have alreayd put way too much time into making this code work (like 40 hours :(  )
 
 
+
+
+
+# ================================================================================================================================================== #
+# ================================================================================================================================================== #
+# ================================================================================================================================================== #
+"""
+Placed in depricated code because this version of cross_match, which was last edited before 4/9/2025, runs through the cross-matching procedure in a for loop.
+Each legacy file is read in, then cross matched with the input survey data, then the cross-matched data for each survey is appended to a list of mini-tables
+Then, the entire list of tables is combined AFTER the for loop
+
+The current iteration loads in all files at omce and saves each legacy table in a list, then only does the cross-matching ONCE after all legacy tables are loaded 
+into the list and stored; the actual search around sky function takes the longest, so performing it only once (as in the new version) is preferred
+"""
+# ================================================================================================================================================== #
+# ================================================================================================================================================== #
+# ================================================================================================================================================== #
+
+
+
+
+
+
+
+
+
+# example command: python cross_match.py /d/scratch/ASTR5160/data/first/first_08jul16.fits /d/scratch/ASTR5160/data/legacysurvey/dr9/north/sweep/9.0 100 1 FLUX_G FLUX_R FLUX_Z
+
 def simple_plot(path):
     """ Plot all input survey data located at given path; just do a simple plot for visualizing
     
@@ -335,7 +363,7 @@ def main():# AJF executes this section first (highest 'shell' of code)
     ra_f, dec_f = ra[:n], dec[:n]
     
     # AJF run sdss query function - cross match input survey with sdss 
-    sdss_dr9_query(ra_f, dec_f, n, path1)
+    #sdss_dr9_query(ra_f, dec_f, n, path1)
 
     # AJF build local legacy survey query function list of fits files; use only first n rows of recarray
     uf = leg_query_list(ra_f, dec_f, path2, n)
