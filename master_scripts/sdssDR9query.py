@@ -62,7 +62,7 @@ class sdssQuery:
 if __name__ == '__main__':
     from time import sleep
     from argparse import ArgumentParser
-
+    import numpy as np
     # ADM set up the inputs, with useful help information.
     ap = ArgumentParser(description='Query the SDSS database for objects \
     within 1.2" of an RA/Dec location')
@@ -91,3 +91,6 @@ if __name__ == '__main__':
 
     # ADM the server returns a byte-type string. Convert it to a string.
     print(result.decode())
+    
+
+

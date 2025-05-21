@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 
 # comments: could clean this up at some point but have alreayd put way too much time into making this code work (like 40 hours :(  )
 
-# example command: python cross_match_new.py /d/scratch/ASTR5160/data/first/first_08jul16.fits /d/scratch/ASTR5160/data/legacysurvey/dr9/north/sweep/9.0 100 1 FLUX_G FLUX_R FLUX_Z
+# example command: python cross_match.py /d/scratch/ASTR5160/data/first/first_08jul16.fits /d/scratch/ASTR5160/data/legacysurvey/dr9/north/sweep/9.0 100 1 FLUX_G FLUX_R FLUX_Z
 
 def simple_plot(path):
     """ Plot all input survey data located at given path; just do a simple plot for visualizing
@@ -119,7 +119,7 @@ def sdss_dr9_query(ra, dec, n, path):
 
 def leg_query_list(ra, dec, path, n):
     """ Query the local legacy survey database and build a list of files that have input survey objects in them, based
-    on ra and dec values
+    on ra and dec values; uses code inspired/borrowed from ADM decode_sweep_name and is_in_box
     
     Parameters:
     ----------
@@ -156,8 +156,6 @@ def leg_query_list(ra, dec, path, n):
     # AJF is_in_box implies using for loop (or some iterable) to run through full recarray (first 100 objects in fits file, for example) each loop
     # ... and check if each ra is in the indexed radec box - i.e., each iteration of loop has certain tuple of radec box, and each iteration runs through
     # ... full recarray to check that iteration's radec against all objects
-    # AJF would it be faster to do the 'opposite'? iterate the for loop over the recarray, so first ra/dec pair of recarray is checked agianst all
-    # ... possible radec tuples in first iteraiton of loop; second iter of loop uses second indices of recarray and checks against all radec tuples, etc.?
     
     # AJF make empty 1d array for filling with name of legacy fits file that each object would be in; indexes of this array correspond to index of object in recarray
     full_files = np.empty( (n), dtype = object )
@@ -350,7 +348,7 @@ def main():# AJF executes this section first (highest 'shell' of code)
     ra_f, dec_f = ra[:n], dec[:n]
     
     # AJF run sdss query function - cross match input survey with sdss 
-    #sdss_dr9_query(ra_f, dec_f, n, path1)
+    sdss_dr9_query(ra_f, dec_f, n, path1)
 
     # AJF build local legacy survey query function list of fits files; use only first n rows of recarray
     uf = leg_query_list(ra_f, dec_f, path2, n)
