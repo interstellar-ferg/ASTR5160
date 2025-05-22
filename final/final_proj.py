@@ -23,12 +23,35 @@ from master_scripts.docstring_wrapper import log_sphinx_io as ds
 # python final_proj.py /d/scratch/ASTR5160/final/ dataxy.fits 2500
 
 
+#@ds
 def load(fullpath):
     """
+    Load in the datatable and extract relevant columns as arrays of variables values
+    
+    Parameters
+    ----------
+    fullpath : :class: str
+        path to the datatable to load in
+        
+    Returns
+    ----------
+    :class: numpy.ndarray
+        the x data from table
+    :class: numpy.ndarray
+        the y data from the table
+    :class: numpy.ndarray
+        the y-error data from the table
+
     """
+    # AJF read in data as an astropy table
     data = QTable.read(fullpath)
+    
+    # AJF extract columns of relevant data
     x, y, yerr = data['x'], data['y'], data['yerr']
+    
+    # AJF convert these columsn to arrays so they are easier to work with
     x, y, yerr = np.array(x), np.array(y), np.array(yerr)    
+    
     return x, y, yerr
     
 
@@ -36,12 +59,30 @@ def load(fullpath):
 
 
 
-
+#@ds
 def lin(x_lin, m, b):
     """
+    Acquire y values for corresponsing x values plugged into a linear function
+    
+    Parameters
+    ----------
+    x_lin : :class: numpy.ndarray
+        an array of x values to use in the model function
+    m : :class: numpy.float64
+        the slope of a linear function
+    b : :class: numpy.float64
+        the y-intercept of the function
+        
+    Returns
+    ----------
+    :class: numpy.ndarray
+        an array of y-values derived from plugging in the x_lin into the model function
+        
     """
     
+    # AJF define a linear function
     line = m*x_lin + b
+    
     return line
 
 
@@ -49,12 +90,32 @@ def lin(x_lin, m, b):
 
 
 
-
+#@ds
 def linfit(x, y, yerr, p0):
     """
+    Fit data with a linear function and extract the best-fit parameter values
+    
+    Parameters
+    ----------
+    x : :class: numpy.ndarray
+        the input x data from the table
+    y : :class: numpy.ndarray
+        the input y data from the table
+    yerr : :class: numpy.ndarray
+        the input y error data from the table
+    p0 : :class: tuple
+        the initial guesses, derived from inspecting the first basic plot of the data
+        
+    Returns
+    ----------
+    :class: numpy.ndarray
+        an array of the parameters best-fit values; slope and y intercept
+    
     """
-    x_lin = np.linspace(min(x), max(x), 1000)
+    # AJF set up the curve_fit function to fit the data using input guesses derived from basic plot; use scipy curve_fit
     (mf, bf), ccf = curve_fit(lin, x, y, sigma = yerr, p0 = p0)
+    
+    # AJF create array of parameter best fit values; do not need covariance matrix for this code, although could be added easily
     fits = np.array([mf, bf])
     
     return fits
@@ -65,12 +126,32 @@ def linfit(x, y, yerr, p0):
 
    
 
-
+#@ds
 def quad(x_lin, a2, a1, a0):
     """
-    """
+    Acquire y values for corresponsing x values plugged into a quadratic function
     
+    Parameters
+    ----------
+    x_lin : :class: numpy.ndarray
+        an array of x values to use in the model function
+    a2 : :class: numpy.float64
+        the coefficient for the x^2 term
+    a1 : :class: numpy.float64
+        the coefficient for the x term
+    a0 : :class: numpy.float64
+        the constant in a quadratic function
+        
+    Returns
+    ----------
+    :class: numpy.ndarray
+        an array of y-values derived from plugging in the x_lin into the model function
+
+    
+    """
+    # AJF define a quadratic function
     quadd = a2*(x_lin)**2 + a1*x_lin + a0
+    
     return quadd
 
 
@@ -80,12 +161,32 @@ def quad(x_lin, a2, a1, a0):
 
 
 
-
+#@ds
 def quadfit(x, y, yerr, p0):
     """
+    Fit data with a quadratic function and extract the best-fit parameter values
+    
+    Parameters
+    ----------
+    x : :class: numpy.ndarray
+        the input x data from the table
+    y : :class: numpy.ndarray
+        the input y data from the table
+    yerr : :class: numpy.ndarray
+        the input y error data from the table
+    p0 : :class: tuple
+        guesses for parameter values derived from inspecting the first vasic plot
+        
+    Returns
+    ----------
+    :class: numpy.ndarray
+        an array of the parameter best fit values; a2, a1, a0
+    
     """
-    x_lin = np.linspace(min(x), max(x), 1000)    
+    # AJF set up the curve_fit function to fit the data using input guesses derived from basic plot; use scipy curve_fit    
     (a2, a1, a0), ccf = curve_fit(quad, x, y, sigma=yerr, p0 = p0)
+    
+    # AJF create array of parameter best fit values; do not need covariance matrix for this code, although could be added easily
     fits = np.array([a2, a1, a0])
     
     return fits
@@ -94,10 +195,24 @@ def quadfit(x, y, yerr, p0):
 
 
 
-
+#@ds
 def basic_errplot(x, y, yerr):
     """
-    Used to find initial curve_fit p0 guesses
+    plot the input data; used to find initial curve_fit p0 guesses
+    
+    Parameters
+    ----------
+    x : :class: numpy.ndarray
+        the input x data from the table
+    y : :class: numpy.ndarray
+        the input y data from the table
+    yerr : :class: numpy.ndarray
+        the input y error data from the table
+        
+        
+    Returns
+    ----------
+    None - plots and saves figure
     
     """
     # AJF setup plot
@@ -129,9 +244,30 @@ def basic_errplot(x, y, yerr):
 
 
 
-
+#@ds
 def log_lik(fits, x, y, yerr, fitdim):
     """
+    Define the log of he liklihood function in Bayesian stats; used for final mcmc sampling when combined with log(prior)
+    also used for fitting curves with minimize
+    
+    Parameters
+    ----------
+    fits : :class: numpy.ndarray
+        the best-fit parameters of whichever model function you are using 
+    x : :class: numpy.ndarray
+        the input x data from the table
+    y : :class: numpy.ndarray
+        the input y data from the table
+    yerr : :class: numpy.ndarray
+        the input y error data from the table      
+    fitdim : :class: str
+        which model function - linear or quadratic?
+        
+    Returns
+    ----------
+    :class: numpy.float64
+        the value of the log liklihood for the given input
+    
     """
     # AJF determine if input parameters (fits) are for linear or quadratic function, then apply proper model
     if fitdim == 'lin':
@@ -144,7 +280,9 @@ def log_lik(fits, x, y, yerr, fitdim):
         print(f'\nYour given fitting dimension was {fitdim} when it should be either "lin" or "quad". Please edit code accordingly.\n')
         sys.exit()
     
+    # AJF formula for log liklihood function; can use any model function here; does not include any f factor for variance perturbations
     llf = -0.5 * np.sum((((y - model)**2)/yerr**2) + np.log(yerr**2))
+    
     return llf
 
 
@@ -153,11 +291,34 @@ def log_lik(fits, x, y, yerr, fitdim):
 
 
 
-
+#@ds
 def ll_func(fits, x, y, yerr, fitdim):
     """
+    Function that gets passed to minimize - is exactly log(liklihood) function, but negative, so that
+    minimize actually does minimize the log (want maximum value since log)
+
+    Parameters
+    ----------
+    fits : :class: numpy.ndarray
+        the best-fit parameters of whichever model function you are using 
+    x : :class: numpy.ndarray
+        the input x data from the table
+    y : :class: numpy.ndarray
+        the input y data from the table
+    yerr : :class: numpy.ndarray
+        the input y error data from the table      
+    fitdim : :class: str
+        which model function - linear or quadratic?
+        
+    Returns
+    ----------
+    :class: numpy.float64
+        the value of the log liklihood for the given input, multiplied by a negative so that it can be minimized properly
+        
+
     """
     
+    # AJF make sure function is negative so that maximum liklihood becomes negative (log)
     final_func = -log_lik(fits, x, y, yerr, fitdim)
     
     return final_func
@@ -167,9 +328,31 @@ def ll_func(fits, x, y, yerr, fitdim):
 
 
 
-
+#@ds
 def minimize_func(fits, x, y, yerr, fitdim):
     """
+    Find the maximum liklihood values by minimizing the negative of the log(liklihood) function
+    extract best fit parameters from this
+    
+    Parameters
+    ----------
+    fits : :class: numpy.ndarray
+        the best-fit parameters of whichever model function you are using 
+    x : :class: numpy.ndarray
+        the input x data from the table
+    y : :class: numpy.ndarray
+        the input y data from the table
+    yerr : :class: numpy.ndarray
+        the input y error data from the table      
+    fitdim : :class: str
+        which model function - linear or quadratic?
+        
+    Returns
+    ----------
+    :class: scipy.optimize._optimize.OptimizeResult
+        the scipy minimize solution data - extract fit parameters from here
+    
+    
     """
     # AJF set up fitdim integer
     if fitdim == 'lin':
@@ -197,9 +380,24 @@ def minimize_func(fits, x, y, yerr, fitdim):
 
 
 
-
+#@ds
 def log_prior(fits, fitdim):
     """
+    The prior distribution for use in finding the posterior distribution - represents offset to log(liklihood) function 
+    if used in log space and if uniform (since liklihood*prior --> log(liklihood) + log(prior) ) and log(prior) is number if prior is uniform (number) 
+
+    Parameters
+    ----------
+    fits : :class: numpy.ndarray
+        the 
+    fitdim : :class: str
+        
+        
+    Returns
+    ----------
+    :class: float
+
+    
     """
     # AJF set up fitdim integer and correct function
     if fitdim == 'lin':
@@ -236,9 +434,30 @@ def log_prior(fits, fitdim):
 
 
     
-
+#@ds
 def log_post_prob(fits, x, y, yerr, fitdim):
     """
+    Define the posterior distribution function - liklihood * prior, or, in log, 
+    log(liklihood) + log(prior)
+
+    Parameters
+    ----------
+    fits : :class: numpy.ndarray
+        maximum-liklihood values of parameters (derived from minimize liklihood func)
+    x : :class: numpy.ndarray
+        input x data from table
+    y : :class: numpy.ndarray
+        input y data from table
+    yerr : :class: numpy.ndarray
+        input y error data from table
+    fitdim : :class: str
+        which fit - linear or quadratic?
+        
+    Returns
+    ----------
+    :class: numpy.float64
+        value of posterior probability for the given fit parameters and data; used for mcmc
+
     """
     # AJF ensure prior is not negative infinity; if it is, return negative inf (since -inf times anything is neg inf)
     if not np.isfinite(log_prior(fits, fitdim)):
@@ -256,10 +475,31 @@ def log_post_prob(fits, x, y, yerr, fitdim):
 
 
 
-
+#@ds
 def basic_23fitplot(lincf, quadcf, linll, quadll, x, y, yerr):
     """
     Used to compare curve_fit derived model fits and log-liklihood minimize derived fits
+    
+    Parameters
+    ----------
+    lincf : :class: numpy.ndarray
+        curve_fit derived best-fit parameter values for linear function
+    quadcf : :class: numpy.ndarray
+        curve_fit derived best-fit parameter values for quadratic function
+    linll : :class: scipy.optimize._optimize.OptimizeResult
+        liklihood minimize derived best-fit parameter values for linear function
+    quadll : :class: scipy.optimize._optimize.OptimizeResult
+        liklihood minimize derived best-fit parameter values for quadratic function
+    x : :class: numpy.ndarray
+        input x data from table
+    y : :class: numpy.ndarray
+        input y data from table
+    yerr : :class: numpy.ndarray
+        input y error data from table
+
+    Returns
+    ----------
+    None - plots and saves figure
     
     """
     # AJF make array of x values to use with models
@@ -324,10 +564,36 @@ def basic_23fitplot(lincf, quadcf, linll, quadll, x, y, yerr):
 
 
 
-
+#@ds
 def MC(fits, x, y, yerr, fitdim, walks):
     """
+    Do an MCMC walk, starting from perturbated initial guesses derived from the log(liklihood) minimize results,
+    to find the best parameters to fit the input function
+
+    Parameters
+    ----------
+    fits : :class: scipy.optimize._optimize.OptimizeResult
+        the log-liklihood minimize results - best fit parameters
+    x : :class: numpy.ndarray
+        input x data from table
+    y : :class: numpy.ndarray
+        input y data from table
+    yerr : :class: numpy.ndarray
+        input y error data from table
+    fitdim : :class: str
+        which fit - linear or quadratic?       
+    walks : :class: int
+        number of steps should each walker do
+
+    Returns
+    ----------
+    :class: emcee.ensemble.EnsembleSampler
+        sampler results
+    :class: int
+        the number of parameters that were fitted (2 for lin, 3 for quad)
+    
     """
+    
     # AJF set up fitdim integer and correct function
     if fitdim == 'lin':
         dim = 2
@@ -344,6 +610,7 @@ def MC(fits, x, y, yerr, fitdim, walks):
     
     # AJF initialize sampler
     sampler = emcee.EnsembleSampler(nwalkers, dim, log_post_prob, args = (x, y, yerr, fitdim))
+    print('\nMCMC sampler running...\n')
     
     # AJF start sampler run
     sampler.run_mcmc(init, walks, progress = True)
@@ -356,10 +623,27 @@ def MC(fits, x, y, yerr, fitdim, walks):
 
 
 
-        
+#@ds    
 def plot_walks(sampler, fitdim, frac):
     """
+    Plot the MCMC random walks for each parameter of the provided fit
+
+    Parameters
+    ----------
+    sampler : :class: emcee.ensemble.EnsembleSampler
+        the results of the mcmc sampler
+    fitdim : :class: str
+        the type of function - lin for linear, quad for quadratic
+    frac : :class: int
+        the x_lim factor to shorten the x axis by; ie if frac = 10 and steps = 5000, x_lim max will be 500 (inspect burn in)
+    
+    Returns
+    ----------
+    None - plots and saves figure
+    
+    
     """
+    # AJF ensure correct labels and dimensions are used for each (2 for linear, 3 for quadratic; equals number of params to fit)
     if fitdim == 'lin':
         dim = 2
         labels = ['m', 'b']
@@ -367,17 +651,22 @@ def plot_walks(sampler, fitdim, frac):
         dim = 3
         labels = ['a2', 'a1', 'a0']    
 
+    # AJF start plot
     fig, ax = plt.subplots(dim, figsize=(12, 8), sharex=True)
     
+    # AJF get the chain of samples (i.e. posterior distribution for each walker)
     samples = sampler.get_chain()
     
+    # AJF plot over each parameter; i.e. first iter will run through m for lin or a2 for quad, etc.
     for i in range(dim):
         a = ax[i]
         a.plot(samples[:, :, i], "k", alpha=0.3)
+        # AJF add toggle frac to display only first frac % of plot xlim (inspect burn in)
         a.set_xlim(0, len(samples)/frac)
         a.set_ylabel(labels[i])
         a.yaxis.set_label_coords(-0.1, 0.5)
 
+    # AJF set titles, labels, save figure
     ax[-1].set_xlabel("Step Number")
     plt.suptitle('MCMC Walks')
     plt.savefig(f'walker_{fitdim}.png', format = 'png')
@@ -390,9 +679,25 @@ def plot_walks(sampler, fitdim, frac):
 
 
 
-
+#@ds
 def print_params(flat, fitdim):
     """
+    Print out the results of the MCMC walk in a fancy format (print to screen)
+    
+    Parameters
+    ----------
+    flat : :class: numpy.ndarray
+        the flattened MCMC results chain - posterior chain
+    fitdim : :class: str
+        the type of fucntion - linear or quadratic
+        
+    Returns
+    ----------
+    :class: dict
+        a dictionary containing the model parameters and their median values, and their 1-sigma values (50 to 84th percentile and 50 to 16 percentile)
+    :class: list
+        a list of the parameter names
+    
     """
     # AJF filter input data to be linear or wuad fit
     if fitdim == 'lin':
@@ -440,12 +745,38 @@ def print_params(flat, fitdim):
     
 
 
-
+#@ds
 def final_plot(lincf, quadcf, linll, quadll, linmc, quadmc, x, y, yerr):
     """
     Used to compare curve_fit derived model fits, log-liklihood minimize derived fits, and mcmc derived fits
+
+    Parameters
+    -----------
+    lincf : :class: numpy.ndarray
+        curve_fit derived best-fit parameter values for linear function
+    quadcf : :class: numpy.ndarray
+        curve_fit derived best-fit parameter values for quadratic function
+    linll : :class: scipy.optimize._optimize.OptimizeResult
+        liklihood minimize derived best-fit parameter values for linear function
+    quadll : :class: scipy.optimize._optimize.OptimizeResult
+        liklihood minimize derived best-fit parameter values for quadratic function
+    linmc : :class: dict
+        a dictionary containing the mcmc-derived linear-best fit parameter values/1-sigma uncertainties
+    quadmc : :class: dict
+        a dictionary containing the mcmc-derived quadratic-best fit parameter values/1-sigma uncertainties
+    x : :class: numpy.ndarray
+        input x data from table
+    y : :class: numpy.ndarray
+        input y data from table
+    yerr : :class: numpy.ndarray
+        input y error data from table
+
+    Returns
+    ----------
+    None - plots and saves figure
     
     """
+    
     # AJF make array of x values to use with models
     x_lin = np.linspace(min(x), max(x), 1000)
     
@@ -525,19 +856,33 @@ def final_plot(lincf, quadcf, linll, quadll, linmc, quadmc, x, y, yerr):
 
 
 
+#@ds
 def corner_plot(flat, params):
     """
+    Create the corner plot - histograms and contour maps of posterior chains for each parameter 
+    
+    Parameters
+    ----------
+    flat : :class: numpy.ndarray
+        the flattened MCMC results chain - posterior chain        
+    params : :class: list  
+        a list of parameter names; length is 2 for linear (m and b), 3 for quadratic (a2, a1, a0)
+    
+    Returns
+    ----------
+    None - plots and saves figure
+    
     """
     
     # AJF do the corner plot with labels added to axes, titles added and size set
-    fig = corner.corner(flat, labels = params, show_titles = True, title_fmt= '.6f', figsize = (10, 10))
+    fig = corner.corner(flat, labels = params, show_titles = True, title_fmt= '.6f', figsize = (20, 20))
     
     # AJF change title based on parameter number
     if len(params) == 2:
-        fig.suptitle('A Corner Plot for MCMC Linear Best Fit Paramaters: Displays Posterior Distribution in Parameter Space')
+        fig.text(0.55, 0.75, 'A Corner Plot for\nMCMC Linear Best Fit Paramaters:\nDisplays Posterior Distribution\nin Parameter Space', fontsize=9, fontweight = 600)
         plt.savefig('corner_lin.png', format = 'png')
     if len(params)==3:
-        fig.suptitle('A Corner Plot for MCMC Quadratic Best Fit Paramaters: Displays Posterior Distribution in Parameter Space')
+        fig.text(0.45, 0.85, 'A Corner Plot for\nMCMC Quadratic Best Fit Paramaters:\nDisplays Posterior Distribution\nin Parameter Space', fontsize=12, fontweight = 600)
         plt.savefig('corner_quad.png', format = 'png')
     
     # AJF show plot
@@ -630,7 +975,12 @@ def main():
     corner_plot(flatl, linp)
     corner_plot(flatq, quadp)
 
-
+    # AJF final comments on linear vs. quadratic fits
+    print(f'\nIt appears that, because the 1-sigma confidence (i.e., the data between the 16th and the 84th percentile)')
+    print(f'indicates values for a2 between ~ 0.043 and ~ 0.080, I believe that the quadratic fit is justified; if the a2 parameter')
+    print(f'were to have some sort of meaningful probability to be zero, then the argument could be made that the linear fit')
+    print(f'works just fine. However, a2 = 0 is on the very, very low left side of the posterior distribution, and essentially')
+    print(f'has no probabilty of being the true value for a2, thus indicating that a quadratic fit is more probably necessary.\n')
 
 if __name__=='__main__':
     main() 
