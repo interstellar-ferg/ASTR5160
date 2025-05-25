@@ -81,5 +81,13 @@ Week 14:
 - 26. The emcee package
     - use the python emcee package to fit a linear model to data (find best fit parameters m and b using emcee)
 
+HW:
+- HW0. Basic intro to python and uploading to GitHub; fit a line and plot it
+- HW1. Find objects at lowest airmass at a certain time at a certain observatory; working with astropy coordinates, skycoord, frames, altaz, etc.
+- HW2. Find areas on a sphere of certain ra/dec regions; plot them; plot in aitoff projection; create equal-dispersion points on a sphere
+- HW3. Data mining; cros-match objects across surveys, convert fluxes to mags, mask data using band criteria, fetch data from SDSS
+- HW4. Classify tables of objects based on color cut and flag cut criteria; quasar color cuts (W1-W2>0.8), type=PSF and ALLMASKS masks, etc.
 
+Final:
+- Final. Use the emceee package/Bayesian stats to fit linear and quadratic models to data; plot using corner; find 16th, 50th, 84th percentiles; find best fit parameters
 
