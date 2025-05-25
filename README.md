@@ -39,6 +39,47 @@ Week6:
 - 12. General masking applications
     - continuation of 11; explains general uses of masking, plots masks and shapes bound by ra/dec caps
 
+Week7: 
+- 13. GitHib (uploading to repository, new branches)
+    - explains commands for setting up new branches, uploading code to github, comments, commits/add
+- 14. Python using functions from other scripts
+    - how to import code from other scripts and use it
+
+Week8:
+- 15. SQL Queries
+    - search SDSS surveys and large databases with SQL searches; load in data
+- 16. Cross-Matching Surveys
+    -  find the common objects between two surveys; usually takes on set of coordinates and finds objects within 1 arcsec of those coordinates
+
+Week9:
+- BREAK
+
+Week10:
+- 17. Magnitude systems
+    - understand and convert magnitudes and fluxes (vega and AB mags, nanomaggies, etc) - understand UBVRI, ugriz
+- 18. Classification methods (color cuts)
+    - convert fluxes/mags and find color cuts to classify data
+
+Week11:
+- BREAK
+
+Week12:
+- 21. Flagging bad data
+    - use flags and bitmasks to filter out bad data from Legacy sweeps (overexposure, type, other spuruous images)
+- 22. Adventures in machine learning (INCOMPLETE)
+    - use k-NN mapping techniques to make a machine learning algorithm (INCOMPLETE)
+
+Week13:
+- 23. Fitting a line: Chi-Squared
+    - fit data with a model fit determined by chi-square method of reduction
+- 24. Fitting correlated data: Chi-Squared (INCOMPLETE)
+    - fit data where each parameter is not necessarily independent using the chi-squared method (INCOMPLETE)
+
+Week 14:
+- 25. Using the likelihood function and bayesian stats to fit data - MCMC and Metro-Hastings (INCOMPLETE)
+    - create a metro-hastings style algorithm for fitting a linear model to data (INCOMPLETE)
+- 26. The emcee package
+    - use the python emcee package to fit a linear model to data (find best fit parameters m and b using emcee)
 
 
 
